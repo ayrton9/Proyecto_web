@@ -13,18 +13,20 @@
             size: auto;   
             margin: 0mm;
             }
+        .numero{
+           text-align: center;
+        }
     </style>
 </head>
 <body onload="window.print();window.close()" class="receipt">
     <div class="col-md-1 col-sm-1 col-xs-1 col-xl-1">
         <center>
             <b class="text-center">Tienda Sis</b><br> 
-            <small>Direccion</small><br>
-            <small>FACTURA No. {{enc.factura}}</small><br>
+            <small>3a calle 3--40 zona 1</small><br>
+            <small>FActura No. {{enc.id}}</small><br>
         </center>
         <small>
             <br>
-            <b>Factura No.:</b>&nbsp;&nbsp;{{enc.id}}&nbsp;&nbsp;
             <b>Fecha Fact:</b>&nbsp;&nbsp;{{enc.fecha}}&nbsp;&nbsp; <br>
             <b>Cliente:</b>&nbsp;&nbsp;{{enc.cliente.id}}&nbsp;&nbsp;- {{enc.cliente}}<br>
             <br><br>
@@ -32,31 +34,33 @@
         <table class="table table-condensed table-sm" width="60%">
             <thead>
                 <th>Código</th>
-                <th  align='right'>Cant.</th>
-                <th  align='right'>P. Unit.</th>
-                <th  align='right'>Sub Total</th>
-                <th  align='right'>Descuento</th>
-                <th  align='right'>Total</th>
+                <th  align='center'>Cant.</th>
+                <th  align='center'>P. Unit.</th>
+                <th  align='center'>Sub Total</th>
+                <th  align='center'>Descuento</th>
+                <th  align='center'>Total</th>
             </thead>
             <tbody>
                 {% for obj in detalle %}
                 <tr>
-                    <td>{{obj.producto.id}}</td>
-                    <td>{{obj.cantidad}}</td>
-                    <td>{{obj.precio}}</td>
-                    <td>{{obj.sub_total}}</td>
-                    <td>{{obj.descuento}}</td>
-                    <td>{{obj.total}}</td>
-                </tr>
-                <tr>
                     <td colspan="5">{{obj.producto}}</td>
                 </tr>
+                <tr>
+                    <td class="numero">{{obj.producto.id}}</td>
+                    <td class="numero">{{obj.cantidad}}</td>
+                    <td class="numero">{{obj.precio}}</td>
+                    <td class="numero">{{obj.sub_total}}</td>
+                    <td class="numero">{{obj.descuento}}</td>
+                    <td class="numero">{{obj.total}}</td>
+                </tr>
+                
                 {% endfor %}
             </tbody>
         </table>
         <div class="col-xs-1"></div>
         <div class="col-xs-11">
             <div class="pull-right">
+                <br>
             <table class="table-responsive dt-responsive nowrap">
                 <thead>
                     <th colspan=2>Totales</th>
@@ -66,7 +70,7 @@
                         <td>Sub Total:</td> <td align='right'>{{enc.sub_total}}</td>
                     </tr>
                     <tr>
-                        <td>Iva:</td> <td align='right'>{{enc.descuento}}</td>
+                        <td>Descuento:</td> <td align='right'>{{enc.descuento}}</td>
                     </tr>
                     <tr>
                         <td>Total:</td> <td align='right'><b>{{enc.total}}</b></td>
