@@ -25,6 +25,15 @@
   <!--  Jquery Confirm -->
   <link href="{% static 'base/vendor/jquery_confirm/jquery-confirm.min.css' %}" rel="stylesheet">
 
+  <!-- XDSoft DateTimePicker -->  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" /> 
+
+  <!-- selec2-->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css">
+
+  <link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 </head>
 
@@ -90,12 +99,20 @@
 
 
             {% if perms.cmp.view_proveedor %}
-            <h6 class="collapse-header">Catálogos de Compras</h6>
+            <h6 class="collapse-header">Catálogos de Compras:</h6>
             {% endif %}
 
             {% if perms.cmp.view_proveedor %}
             <a class="collapse-item" href="{% url 'cmp:proveedor_list' %}">Proveedores</a>
             {% endif %}
+
+            <h6 class="collapse-header">Catálogos de Facturacion:</h6>
+
+            {% if perms.fac.view_cliente %}
+            <a class="collapse-item" href="{% url 'fac:cliente_list' %}">Clientes</a>
+            {% endif %}  
+
+
           </div>
         </div>
       </li>
@@ -109,6 +126,10 @@
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Entradas</h6>
           <a class="collapse-item" href="{% url 'cmp:compras_list' %}">Compras</a>
+
+          <h6 class="collapse-header">Salidas</h6>
+          <a class="collapse-item" href="{% url 'fac:factura_list' %}">Facturas</a>
+
         </div>
       </div>
       </li>
@@ -434,6 +455,8 @@
     </div>
   </div>
 
+  <div class="modal fade" id="popup"></div>
+
   <!-- Bootstrap core JavaScript-->
   <script src="{% static 'base/vendor/jquery/jquery.min.js'%}"></script>
   <script src="{% static 'base/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
@@ -450,12 +473,45 @@
 
   <script src="{% static 'base/vendor/jquery_confirm/jquery-confirm.min.js'%}"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+  
+  <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+
+  <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
+
+ 
+  
+
+  <script>
+    $(document).ready(function(){
+      jQuery.datetimepicker.setLocale('es')
+    });
+  </script>
+
 
 {% block control_modal%}
 
 <script>
 
+  function abrir_modal(url){
+    $("#popup").load(url, function(){
 
+      $(this).modal({
+        backdrop: 'static',
+        keyboard: false
+      })
+      $(this).modal('show');
+    });
+    return false; 
+   
+  }
+
+  function cerrar_modal(){
+    $('#popup').modal('hide');
+    return false;
+  }
 
   function mensaje(msg,color='green'){
 
@@ -489,7 +545,7 @@ if(color == "error"){
 
 $.alert({
   title:'',
-  theme: 'material',
+  theme: 'modern',
   type: color,
   content:msg
 });
@@ -512,7 +568,7 @@ $.alert({
   
 {% endblock %}
 
-  {% block js_page %}{% endblock %}
+{% block js_page %}{% endblock %}
 
 </body>
 

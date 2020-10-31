@@ -11,7 +11,9 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
           <div class="dropdown-header">Acciones</div>
-          <a class="dropdown-item" href="#"><i class="fa fa-calendar-plus"></i> Nueva</a>
+          <a class="dropdown-item" href="{% url 'cmp:compras_new' %}"><i class="fa fa-calendar-plus"></i> Nueva</a>
+          <a class="dropdown-item" href="{% url 'cmp:compras_print_all' %}"><i target="reportes" class="fa fa-print"></i> Listado</a>
+          
         </div>
       </div>
     </div>
@@ -36,17 +38,18 @@
             <tbody>
                 {% for item in obj %}
                     <tr>
-                        <td>{{item.id}}</td>
-                        <td>{{item.fecha_compra}}</td>
-                        <td>{{item.observacion}}</td>
-                        <td>{{item.no_factura}}</td>
-                        <td>{{item.fehca_factura}}</td>
-                        <td>{{item.sub_total}}</td>
-                        <td>{{item.descuento}}</td>
-                        <td>{{item.total}}</td>
-                        <td>{{item.estado | yesno:"Activo,Inactivo"}}</td>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.fecha_compra }}</td>
+                        <td>{{ item.observacion }}</td>
+                        <td>{{ item.no_factura }}</td>
+                        <td>{{ item.fecha_factura }}</td>
+                        <td>{{ item.sub_total }}</td>
+                        <td>{{ item.descuento }}</td>
+                        <td>{{ item.total }}</td>
+                        <td>{{ item.estado | yesno:"Activo,Inactivo" }}</td>
                         <td>
-                            <a href="#" class="btn btn-warning btn-circle" role="button"><i class="far fa-edit"></i></a>
+                            <a href="{% url 'cmp:compras_edit' item.id %}" class="btn btn-warning btn-circle"><i class="far fa-edit"></i></a>
+                            <a href="{% url 'cmp:compras_print_one' item.id %}" class="btn btn-success btn-circle" target="reportes"><i class="fas fa-print"></i></a>
                           
                         </td>
                     </tr>
@@ -60,8 +63,31 @@
 
 {% block js_page %}
 <script>
-  $(document).ready(function(){
-    $('.table').DataTable();
-  });
+ $('.table').DataTable({
+      "language": {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "<span class='fa fa-angle-double-left'></span>",
+            "sLast": "<span class='fa fa-angle-double-right'></span>",
+            "sNext": "<span class='fa fa-angle-right'></span>",
+            "sPrevious": "<span class='fa fa-angle-left'></span>"
+        },
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+      }
+    });
 </script>
 {% endblock %}
